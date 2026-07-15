@@ -20,7 +20,8 @@ def accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     # y_pred may be class indices or an (N, C) score / probability matrix
     yt = np.asarray(y_true).reshape(-1)
     yp = np.asarray(y_pred)
-    if yp.ndim > 1:
+    # only argmax when there are multiple class scores (not a single sigmoid column)
+    if yp.ndim > 1 and yp.shape[1] > 1:
         yp = np.argmax(yp, axis=1)
     else:
         yp = yp.reshape(-1)
