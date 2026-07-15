@@ -14,6 +14,7 @@ from core.losses import (
     MSE,
     SoftmaxCrossEntropy,
 )
+from core.mlp import MLP, build_perceptron
 from core.utils import accuracy, mini_batches, normalize, one_hot, set_seed
 
 __all__ = [
@@ -22,6 +23,7 @@ __all__ = [
     "CategoricalCrossEntropy",
     "Dense",
     "Linear",
+    "MLP",
     "MSE",
     "ReLU",
     "Sigmoid",
@@ -29,6 +31,7 @@ __all__ = [
     "SoftmaxCrossEntropy",
     "Tanh",
     "accuracy",
+    "build_perceptron",
     "get_activation",
     "mini_batches",
     "normalize",
