@@ -1,4 +1,4 @@
-# Neural Networks From Scratch
+# Neural Networks From Scratch: A NumPy-Based Deep Learning Engine
 
 A small neural network library written in NumPy, used across three experiments: XOR classification, synthetic regression, and Iris multi-class classification.
 
