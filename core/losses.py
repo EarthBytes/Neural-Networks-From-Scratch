@@ -1,9 +1,11 @@
 from __future__ import annotations
 import numpy as np
 
+# keep probs off exact 0/1 so log stays defined
 _EPS = 1e-12
 
 class BinaryCrossEntropy:
+    # XOR / binary classification — expects sigmoid probabilities
 
     @staticmethod
     def forward(y_pred: np.ndarray, y_true: np.ndarray) -> float:
@@ -13,6 +15,7 @@ class BinaryCrossEntropy:
 
     @staticmethod
     def backward(y_pred: np.ndarray, y_true: np.ndarray) -> np.ndarray:
+        # gradient of the batch-mean loss
         p = np.clip(y_pred, _EPS, 1.0 - _EPS)
         y = y_true.astype(float)
         n = y_pred.shape[0]
@@ -20,6 +23,7 @@ class BinaryCrossEntropy:
 
 
 class MSE:
+    # regression loss
 
     @staticmethod
     def forward(y_pred: np.ndarray, y_true: np.ndarray) -> float:
@@ -32,9 +36,11 @@ class MSE:
 
 
 class CategoricalCrossEntropy:
+    # operates on probabilities; for training, prefer SoftmaxCrossEntropy on logits
     @staticmethod
     def forward(y_pred: np.ndarray, y_true: np.ndarray) -> float:
         p = np.clip(y_pred, _EPS, 1.0)
+        # y_true may be class indices (N,) or one-hot (N, C)
         if y_true.ndim == 1:
             n = y_true.shape[0]
             return float(-np.mean(np.log(p[np.arange(n), y_true.astype(int)])))
@@ -42,6 +48,7 @@ class CategoricalCrossEntropy:
 
     @staticmethod
     def backward(y_pred: np.ndarray, y_true: np.ndarray) -> np.ndarray:
+        # returns dL/dprobs (not dL/dlogits)
         p = np.clip(y_pred, _EPS, 1.0)
         n = y_pred.shape[0]
         if y_true.ndim == 1:
@@ -52,6 +59,12 @@ class CategoricalCrossEntropy:
 
 
 class SoftmaxCrossEntropy:
+    """Stable softmax + categorical cross-entropy on logits (Iris path).
+
+    Forward applies a max-shifted softmax, then CE. Backward returns
+    dL/dlogits = (probs - one_hot) / N directly — do not also call
+    Softmax.backward when using this loss.
+    """
     @staticmethod
     def _softmax(logits: np.ndarray) -> np.ndarray:
         shifted = logits - np.max(logits, axis=-1, keepdims=True)
