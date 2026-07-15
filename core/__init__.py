@@ -7,9 +7,11 @@ from core.activations import (
     Tanh,
     get_activation,
 )
+from core.layers import Dense
 
 __all__ = [
     "ACTIVATIONS",
+    "Dense",
     "Linear",
     "ReLU",
     "Sigmoid",
