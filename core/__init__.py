@@ -14,6 +14,7 @@ from core.losses import (
     MSE,
     SoftmaxCrossEntropy,
 )
+from core.utils import accuracy, mini_batches, normalize, one_hot, set_seed
 
 __all__ = [
     "ACTIVATIONS",
@@ -27,5 +28,10 @@ __all__ = [
     "Softmax",
     "SoftmaxCrossEntropy",
     "Tanh",
+    "accuracy",
     "get_activation",
+    "mini_batches",
+    "normalize",
+    "one_hot",
+    "set_seed",
 ]
